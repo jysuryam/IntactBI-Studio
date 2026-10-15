@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+spring:
+  application:
+    name: intactbi-studio-backend
+  datasource:
+    url: \${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/intactbi_metadata}
+    username: \${SPRING_DATASOURCE_USERNAME:intactbi_admin}
+    password: \${SPRING_DATASOURCE_PASSWORD:IntactBiSecurePassword2025!}
+    hikari:
+      minimum-idle: 5
+      maximum-pool-size: 20
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      pool-name: IntactBiHikariCP
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+intactbi:
+  reports:
+    temp-directory: /tmp/intactbi/reports
+    cache-duration-minutes: 60
+  security:
+    jwt-secret: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    jwt-expiration-ms: 86400000

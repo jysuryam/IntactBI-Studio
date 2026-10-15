@@ -1,0 +1,6 @@
+{
+  "name": "IntactBI Studio",
+  "description": "Enterprise web-based Business Intelligence, visual report designer, chart builder, SQL query studio, and dashboard platform inspired by Jaspersoft and Power BI.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

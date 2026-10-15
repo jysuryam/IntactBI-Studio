@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  intactbi-postgres:
+    image: postgres:16-alpine
+    container_name: intactbi-postgres
+    environment:
+      POSTGRES_DB: intactbi_metadata
+      POSTGRES_USER: intactbi_admin
+      POSTGRES_PASSWORD: IntactBiSecurePassword2025!
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U intactbi_admin -d intactbi_metadata"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  intactbi-backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: intactbi-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://intactbi-postgres:5432/intactbi_metadata
+      SPRING_DATASOURCE_USERNAME: intactbi_admin
+      SPRING_DATASOURCE_PASSWORD: IntactBiSecurePassword2025!
+      SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+      SPRING_FLYWAY_ENABLED: 'true'
+    depends_on:
+      intactbi-postgres:
+        condition: service_healthy
+
+volumes:
+  pgdata:
